@@ -1,0 +1,81 @@
+
+------------------------
+|    UtilityCompany    |
+------------------------
+| -name: String        |
+| -bills: List<Bill>   |
+------------------------
+| +UtilityCompany(name: String) |
+| +addBill(bill: Bill): void    |
+| +removeBill(bill: Bill): void |
+| +calculateTotalRevenue(): double |
+| +calculateAverageBillAmount(): double |
+------------------------
+
+------------------------
+|         Bill         |
+------------------------
+| -billNumber: int     |
+| -dueDate: Date       |
+| -amount: double      |
+| -isPaid: boolean     |
+| -customer: Customer  |
+| -utilityCompany: UtilityCompany |
+------------------------
+| +Bill(billNumber: int, dueDate: Date, amount: double, customer: Customer, utilityCompany: UtilityCompany) |
+| +payBill(): void |
+| +getAmount(): double |
+| +isPaid(): boolean |
+| +getCustomer(): Customer |
+| +getUtilityCompany(): UtilityCompany |
+------------------------
+
+------------------------
+|       Customer       |
+------------------------
+| -name: String        |
+| -address: String     |
+| -email: String       |
+| -phoneNumber: String |
+| -bills: List<Bill>   |
+------------------------
+| +Customer(name: String, address: String, email: String, phoneNumber: String) |
+| +addBill(bill: Bill): void    |
+| +removeBill(bill: Bill): void |
+| +getBills(): List<Bill> |
+-----------------------
+
+
+
+
+
++------------------------------------------------------+
+|                   ElectricityBillSystem              |
++------------------------------------------------------+
+| -customers: ArrayList<Customer>                      |
++------------------------------------------------------+
+| +addCustomer(customer: Customer): void                |
+| +removeCustomer(customer: Customer): void             |
+| +getCustomers(): ArrayList<Customer>                  |
+| +generateBill(customer: Customer): Bill                |
++------------------------------------------------------+
+
++---------------------------+             +------------------------+
+|         Customer          |             |          Bill          |
++---------------------------+             +------------------------+
+| -id: int                  |             | -billId: int            |
+| -name: String             |             | -customer: Customer     |
+| -address: String          |             | -dueDate: Date          |
+| -contactNumber: String    |             | -amount: double         |
++---------------------------+             +------------------------+
+| +getId(): int             |             | +getBillId(): int       |
+| +getName(): String        |             | +getCustomer(): Customer|
+| +getAddress(): String     |             | +getDueDate(): Date      |
+| +getContactNumber():      |             | +getAmount(): double     |
+| +String                   |             |                        |
+| +getBills(): ArrayList<Bill>|             |                        |
+| +addBill(bill: Bill):     |             |                        |
+| +void                     |             |                        |
+| +removeBill(bill: Bill):  |             |                        |
+| +void                     |             |                        |
++---------------------------+             +------------------------+
