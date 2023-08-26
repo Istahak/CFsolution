@@ -6,43 +6,43 @@ void solve()
     int n;
     cin >> n;
     vector<int> v(n);
-    iota(v.begin(), v.end(), 1);
+    for (int i = 1; i <= n; i++)
+        v[i - 1] = i;
     int mx = 0;
     do
     {
-        int sum = 0;
+        set<int> st;
         for (int i = 0; i < n; i++)
         {
-            sum += (v[i] ^ (i + 1));
+            int x;
+            if (i < n - 1)
+                x = __gcd(v[i], v[i + 1]);
+            else
+                x = __gcd(v[n - 1], v[0]);
+            st.insert(x);
         }
-        mx = max(mx, sum);
-
+        // cout << st.size() << endl;
+        mx = max(mx, (int)st.size());
     } while (next_permutation(v.begin(), v.end()));
 
     do
     {
-        int sum = 0;
-        vector<int> Xor(n);
+        set<int> st;
         for (int i = 0; i < n; i++)
         {
-            sum += (v[i] ^ (i + 1));
-            Xor[i] = (v[i] ^ (i + 1));
+            int x;
+            if (i < n - 1)
+                x = __gcd(v[i], v[i + 1]);
+            else
+                x = __gcd(v[n - 1], v[0]);
+            st.insert(x);
         }
-        if (mx == sum)
+        if (mx == st.size())
         {
-            for (auto x : v)
-            {
-                cout << x << ' ';
-            }
-            cout << endl;
-
-            for (auto x : Xor)
-            {
-                cout << x << ' ';
-            }
+            for (int i : v)
+                cout << i << ' ';
             cout << endl;
         }
-
     } while (next_permutation(v.begin(), v.end()));
 }
 int main()

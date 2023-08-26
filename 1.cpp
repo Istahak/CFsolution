@@ -1,50 +1,57 @@
 #include <bits/stdc++.h>
 #define ll long long int
 using namespace std;
-const int N = 2e5 + 10;
-const ll M = 1e9 + 7;
 void solve()
 {
-    ll n, m, d;
-    cin >> n >> m >> d;
-    vector<ll> arr(n);
-    vector<ll> brr(m);
-    for (int i = 0; i < n; ++i)
-        cin >> arr[i];
-    for (int i = 0; i < m; ++i)
-        cin >> brr[i];
-    sort(arr.begin(), arr.end());
-    sort(brr.begin(), brr.end());
-    ll ans = -1;
-    for (int i = 0; i < n; ++i)
+    int n;
+    cin >> n;
+    map<string, int> fr;
+    for (int i = 0; i < n; i++)
     {
-        ll curr = arr[i];
-        int it = upper_bound(brr.begin(), brr.end(), arr[i] + d) - brr.begin();
-        it--;
-        if (abs(brr[it] - arr[i]) <= d && it >= 0)
+        string s;
+        cin >> s;
+        if (s.size() > 2)
         {
-            // cout << (*it) << endl;
-            ans = max(ans, arr[i] + (brr[it]));
+            sort(s.begin() + 1, s.end() - 1);
         }
+        fr[s]++;
     }
-    for (int i = 0; i < m; ++i)
+    int q;
+    cin >> q;
+    cin.ignore();
+    while (q--)
     {
-        ll curr = brr[i];
-        int it = upper_bound(arr.begin(), arr.end(), brr[i] + d) - arr.begin();
-        it--;
-        if (abs(arr[it] - brr[i]) <= d && it >= 0)
+        int ans = 1;
+        string s;
+        getline(cin, s);
+        stringstream ss(s);
+        vector<string> v;
+        string sss;
+        while (getline(ss, sss, ' '))
         {
-            ans = max(ans, brr[i] + (arr[it]));
+            v.push_back(sss);
         }
+
+        for (int i = 0; i < v.size(); i++)
+        {
+            if (v[i].size() > 2)
+            {
+                sort(v[i].begin() + 1, v[i].end() - 1);
+            }
+            ans *= fr[v[i]];
+        }
+        cout << ans << endl;
     }
-    cout << ans << endl;
 }
 int main()
 {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
     int t = 1;
-    // cin >> t;
-    while (t--)
+    cin >> t;
+    for (int cs = 1; cs <= t; cs++)
     {
+        cout << "Case " << cs << ": " << endl;
         solve();
     }
     return 0;

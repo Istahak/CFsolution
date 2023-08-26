@@ -1,60 +1,62 @@
 #include <bits/stdc++.h>
 #define ll long long int
 using namespace std;
+int n, m;
+char grid[300][300];
+bool vis[300][300];
+bool v[300][300];
+int ans = 0;
+int dx[] = {-1, 0, 1, 0};
+int dy[] = {0, -1, 0, 1};
 
+void dfs(int x, int y)
+{
+
+    if (grid[x][y] == '#' or vis[x][y])
+        return;
+    vis[x][y] = true;
+
+    for (int i = 0; i < 4; i++)
+    {
+        int xx = x, yy = y;
+        while (grid[xx + dx[i]][yy + dy[i]] == '.')
+        {
+            v[xx][yy] = true;
+            xx += dx[i];
+            yy += dy[i];
+        }
+        if (!vis[xx][yy])
+            dfs(xx, yy);
+    }
+}
 void solve()
 {
-    int m, n;
-    cin >> m >> n;
-    map<string, ll> mp;
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < 300; i++)
     {
-        string s;
-        cin >> s;
-        for (int mask = 0; mask < (1 << 8); mask++)
+        for (int j = 0; j < 300; j++)
         {
-            int bitcount = __builtin_popcount(mask);
-            if (bitcount >= 6)
-            {
-                string ss;
-                for (int k = 0; k < 8; k++)
-                {
-                    if ((1 << k) & mask)
-                    {
-                        ss.push_back(s[k]);
-                    }
-                }
-                mp[ss]++;
-                // cout << ss << endl;
-            }
+            grid[i][j] = '#';
         }
     }
-    while (m--)
+    cin >> n >> m;
+    for (int i = 1; i <= n; i++)
     {
-        string s;
-        int d;
-        cin >> s >> d;
-        ll ans = 0;
-        for (int mask = 0; mask < (1 << 8); mask++)
+        for (int j = 1; j <= m; j++)
         {
-            int bitcount = __builtin_popcount(mask);
-            int unset = 8 - bitcount;
-            if (unset <= d)
-            {
-                string ss;
-                for (int k = 0; k < 8; k++)
-                {
-                    if ((1 << k) & mask)
-                    {
-                        ss.push_back(s[k]);
-                    }
-                }
-                ans += mp[ss];
-                // cout << ss << endl;
-            }
+            cin >> grid[i][j];
         }
-        cout << ans << endl;
     }
+    // cout << grid[2][2] << endl;
+    dfs(2, 2);
+    v[2][2] = true;
+    for (int i = 1; i <= n; i++)
+    {
+        for (int j = 1; j <= m; j++)
+        {
+            ans += v[i][j];
+        }
+    }
+    cout << ans << endl;
 }
 int main()
 {
