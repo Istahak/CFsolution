@@ -1,76 +1,35 @@
-#include <bits/stdc++.h>
-#define int long long int
+#include <iostream>
+#include <vector>
 using namespace std;
-struct FenwickTree
-{
-    vector<int> bit; // binary indexed tree
-    int n;
 
-    FenwickTree(int n)
-    {
-        this->n = n;
-        bit.assign(n, 0);
-    }
-
-    FenwickTree(vector<int> const &a) : FenwickTree(a.size())
-    {
-        for (size_t i = 0; i < a.size(); i++)
-            add(i, a[i]);
-    }
-
-    int sum(int r)
-    {
-        int ret = 0;
-        for (; r >= 0; r = (r & (r + 1)) - 1)
-            ret += bit[r];
-        return ret;
-    }
-
-    int sum(int l, int r)
-    {
-        return sum(r) - sum(l - 1);
-    }
-    
-    void add(int idx, int delta)
-    {
-        for (; idx < n; idx = idx | (idx + 1))
-            bit[idx] += delta;
-    }
-
-    void add(int l, int r, int val)
-    {
-        add(l, val);
-        add(r + 1, -val);
-    }
-};
-void solve()
-{
-    int n, q;
-    cin >> n >> q;
-    vector<int> v(n + 1), pre(n + 1);
-    for (int i = 1; i <= n; i++)
-        cin >> v[i];
-    for (int i = 1; i <= n; i++)
-    {
-        pre[i] = pre[i - 1] ^ v[i];
-    }
-    while (q--)
-    {
-        int l, r;
-        cin >> l >> r;
-        cout << (pre[r] ^ pre[l - 1]) << endl;
+void reverseArray(vector<int>& arr, int start, int end) {
+    while (start < end) {
+        swap(arr[start], arr[end]);
+        start++;
+        end--;
     }
 }
-int32_t main()
-{
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int t = 1;
-    // cin >> t;
-    for (int cs = 1; cs <= t; cs++)
-    {
-        // cout << "Case #" << cs << ": ";
-        solve();
+
+void rotateArrayRight(vector<int>& arr, int k) {
+    int n = arr.size();
+    k = k % n; // Handle cases where k is greater than array size
+
+    reverseArray(arr, 0, n - 1);       // Reverse the whole array
+    reverseArray(arr, 0, k - 1);       // Reverse the first k elements
+    reverseArray(arr, k, n - 1);       // Reverse the remaining n-k elements
+}
+
+int main() {
+    vector<int> arr = {1, 2, 3, 4, 5, 6, 7};
+    int k = 1;
+
+    rotateArrayRight(arr, k);
+
+    cout << "Rotated Array: ";
+    for (int num : arr) {
+        cout << num << " ";
     }
+    cout << endl;
+
     return 0;
 }

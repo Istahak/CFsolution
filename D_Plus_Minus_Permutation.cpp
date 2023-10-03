@@ -3,21 +3,19 @@
 using namespace std;
 void solve()
 {
-    int n, k, n, h, m, ls, ans;
-    char d;
-    cin >> n >> k >> n;
-    cin >> h >> h >> d >> m;
-    ls = m + h * 60;
-    ans = 1;
-    for (int i = 2; i <= n; i++)
+    ll n, x, y;
+    cin >> n >> x >> y;
+    auto div = [&](ll h)
     {
-        cin >> h >> h >> d >> m;
-        m += h * 60;
-        if (m - ls > k)
-            ++ans;
-        ls = m;
-    }
-    cout << ans << '\n';
+        return h * (h + 1) / 2;
+    };
+    ll xd = n / x;
+    ll yd = n / y;
+    ll xyd = n / lcm(x, y);
+
+    xd -= xyd;
+    yd -= xyd;
+    cout << div(n) - div(n - xd) - div(yd) << endl;
 }
 int main()
 {

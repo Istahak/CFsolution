@@ -8,20 +8,23 @@ void solve()
     vector<int> v(n);
     for (auto &x : v)
         cin >> x;
-    vector<int> ans;
-    ans.push_back(v.front());
-    for (int i = 1; i < n; i++)
+    vector<int> dp(n + 1, 0);
+    for (int i = 0; i < n; i++)
     {
-        if (v[i] < v[i - 1])
-        {
-            ans.push_back(v[i]);
-        }
-        ans.push_back(v[i]);
+        dp[v[i]] = 1;
+        dp[v[i]] += dp[v[i] - 1];
     }
-    cout << ans.size() << endl;
-    for (auto &x : ans)
-        cout << x << " ";
-    cout << endl;
+    int ans = 0;
+    for (int i = 1; i <= n;)
+    {
+        int cur = 1;
+        while (i <= n and dp[i] == cur)
+        {
+            cur++, i++;
+        }
+        ans++;
+    }
+    cout << ans - 1 << endl;
 }
 int main()
 {

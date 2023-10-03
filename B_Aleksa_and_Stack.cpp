@@ -3,21 +3,15 @@
 using namespace std;
 void solve()
 {
-    int n, k, n, h, m, ls, ans;
-    char d;
-    cin >> n >> k >> n;
-    cin >> h >> h >> d >> m;
-    ls = m + h * 60;
-    ans = 1;
-    for (int i = 2; i <= n; i++)
+    int n;
+    cin >> n;
+    int i = 1;
+    while (n--)
     {
-        cin >> h >> h >> d >> m;
-        m += h * 60;
-        if (m - ls > k)
-            ++ans;
-        ls = m;
+        cout << i << ' ';
+        i += 2;
     }
-    cout << ans << '\n';
+    cout << '\n';
 }
 int main()
 {

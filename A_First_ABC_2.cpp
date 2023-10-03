@@ -5,30 +5,24 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    for (auto &x : v)
-        cin >> x;
-    vector<int> ans;
-    ans.push_back(v.front());
-    for (int i = 1; i < n; i++)
+    string s;
+    cin >> s;
+    for (int i = 0; i < n - 2; i++)
     {
-        if (v[i] < v[i - 1])
+        if (s[i] == 'A' and s[i + 1] == 'B' and s[i + 2] == 'C')
         {
-            ans.push_back(v[i]);
+            cout << i + 1 << '\n';
+            return;
         }
-        ans.push_back(v[i]);
     }
-    cout << ans.size() << endl;
-    for (auto &x : ans)
-        cout << x << " ";
-    cout << endl;
+    cout << -1 << '\n';
 }
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     for (int cs = 1; cs <= t; cs++)
     {
         // cout << "Case #" << cs << ": ";

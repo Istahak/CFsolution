@@ -1,23 +1,25 @@
 #include <bits/stdc++.h>
 #define ll long long int
 using namespace std;
+ll f(ll n)
+{
+    ll tem = n * (n + 1);
+    tem /= 2;
+    return tem;
+}
 void solve()
 {
-    int n, k, n, h, m, ls, ans;
-    char d;
-    cin >> n >> k >> n;
-    cin >> h >> h >> d >> m;
-    ls = m + h * 60;
-    ans = 1;
-    for (int i = 2; i <= n; i++)
+    ll n, k, x;
+    cin >> n >> k >> x;
+    ll fi = f(k);
+    ll sc = f(n) - f(n - k);
+    if (fi <= x and x <= sc)
     {
-        cin >> h >> h >> d >> m;
-        m += h * 60;
-        if (m - ls > k)
-            ++ans;
-        ls = m;
+        cout << "YES" << '\n';
     }
-    cout << ans << '\n';
+    else
+        cout << "NO"
+             << "\n";
 }
 int main()
 {

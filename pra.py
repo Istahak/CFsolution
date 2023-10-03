@@ -1,2 +1,6 @@
-a,b=map(int,input().split())
-print(a+b)
+a=["ACE", "BDF", "CEG", "DFA", "EGB", "FAC", "GBD"]
+b =input()
+if b in a:
+    print("Yes")
+else:
+    print("No")    

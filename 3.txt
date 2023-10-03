@@ -1,0 +1,200 @@
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Istahak_Islam_16_task_2 {
+
+    static String url = "jdbc:mysql://10.33.4.30/db2020615626";
+    static String user = "s2020615626";
+    static String password = "hiistahak";
+    static Connection connection = null;
+    public static void task1(){
+      try{
+        Statement statement = connection.createStatement();
+
+            String query = "SELECT StudentID, Course, IncourseMarks, FinalMarks, TotalMarks, ExamDate FROM tbl_ExamMarks WHERE StudentID = 1";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = rs.getInt(1);
+                String course = rs.getString(2);
+                int incourse = rs.getInt(3);
+                int final = rs.getInt(4);
+                int total = rs.getInt(5);
+                Date date = rs.getDate(6);
+                System.out.println(id+" "+course+" "+incourse+" "+final+" "+total+" "+date.toString());
+            }
+      }
+      catch(Exception e){
+
+      }
+    }
+    public static void task2(){
+      try{
+        Statement statement = connection.createStatement();
+            String query = "SELECT Course, MAX(TotalMarks) AS MaxObtainedMarks, AVG(TotalMarks) AS AvgObtainedMarks FROM tbl_ExamMarks WHERE ExamDate = '2023-01-15' GROUP BY Course";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String course = rs.getString(1);
+                int max_marks = rs.getInt(2);
+                int avg = rs.getInt(3);
+                System.out.println(course+" "+max_marks+" "+avg);
+            }
+      }
+      catch(Exception e){
+
+      }
+    }
+    public static void task3(){
+      try{
+        Statement statement = connection.createStatement();
+
+            String query = "SELECT StudentID FROM tbl_ExamMarks AS t1 GROUP BY StudentID HAVING COUNT(DISTINCT Course) = ( SELECT COUNT(Course) FROM tbl_ExamMarks WHERE t1.StudentID = StudentID); SELECT StudentID,Course, MAX(TotalMarks) AS MaxObtainedMarks FROM tbl_ExamMarks GROUP BY StudentID, Course";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int id = rs.getInt(1);
+                System.out.println(id);
+            }
+      }
+      catch(Exception e){
+
+      }
+    }
+    public static void main(String[] args) {
+
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            try {
+                connection = DriverManager.getConnection(url, user, password);
+                System.out.println("Connected to the database!");
+                // Create a statement
+                Statement statement = connection.createStatement();
+                // Define the SQL UPDATE query
+                String updateQuery = "UPDATE person SET Name = ? WHERE ID = ?";
+                Scanner scanner = new Scanner(System.in);
+
+                // Create a PreparedStatement
+                PreparedStatement preparedStatement = connection.prepareStatement(updateQuery);
+
+                preparedStatement.close(); // Close the PreparedStatement
+
+                if( validinsert(1,"C3","2020-06-23",23,54,77)){
+
+                    String insertQuery = "INSERT INTO tbl_ExamMarks (StudentId, Course, ExamDate,IncourseMarks,FinalMarks,TotalMarks) VALUES (?, ?, ?,?,?,?)";
+                    PreparedStatement insertpreparedStatement = connection.prepareStatement(insertQuery);
+                    insertpreparedStatement.setInt(1, 1);
+                    insertpreparedStatement.setString(2, "C3");
+                    insertpreparedStatement.setDate(3, java.sql.Date.valueOf("2020-06-23"));
+                    insertpreparedStatement.setInt(4,23);
+                    insertpreparedStatement.setInt(5,54);
+                    insertpreparedStatement.setInt(6,77);
+                    insertpreparedStatement.close();
+                }
+
+
+
+                String query = "SELECT * FROM tbl_ExamMarks where StudentID = ?";
+                preparedStatement = connection.prepareStatement(query);
+                preparedStatement.setInt(1,1);
+
+                ResultSet resultSet = preparedStatement.executeQuery();
+
+                while (resultSet.next()) {
+
+                    int studentid=resultSet.getInt("StudentID");
+                    int incoursemm = resultSet.getInt("IncouseMarks");
+                    Date date=resultSet.getDate("ExamDate");
+                    String course=resultSet.getString("Course");
+                    int fm=resultSet.getInt("FinalMarks");
+                    int tm=resultSet.getInt("TotalMarks");
+
+                    System.out.printf(Integer.toString(studentid)+"  "+course+"   "+Integer.toString(incoursemm)+"   "+Integer.toString(fm)+"   "+Integer.toString(tm));
+
+
+                }
+
+
+                // Process the query results
+
+                resultSet.close();
+                statement.close();
+                scanner.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                connection.close();
+            }
+
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static boolean validinsert(int StudentID, String Course, String Examdate,int IncouseMarks,int FinalMarks,int TotalMarks){
+
+        try {
+            Statement statement = connection.createStatement();
+
+            String query = "SELECT max(TotalMarks) as tmx FROM tbl_ExamMarks where StudentID = ? and Course= ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,StudentID);
+            preparedStatement.setString(2,Course);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                int mx = resultSet.getInt("tmx");
+                if (mx >= 80) {
+                    System.out.println("Alreay get 80%  marks");
+                    return false;
+                }
+            }
+            query = "SELECT * FROM tbl_ExamMarks where StudentID = ? and Course= ?";
+            preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,StudentID);
+            preparedStatement.setString(2,Course);
+            resultSet = preparedStatement.executeQuery();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date newexamdate=dateFormat.parse(Examdate);
+            long newtime=newexamdate.getTime();
+            while (resultSet.next()) {
+                int incoursemm = resultSet.getInt("IncouseMarks");
+                if (incoursemm!=IncouseMarks) {
+                    System.out.println("Incourse Marks Error");
+                    return false;
+                }
+
+                Date date=resultSet.getDate("ExamDate");
+                long oldtime=date.getTime();
+                if(oldtime<newtime){
+                    System.out.println("Current date is earlier than previous date");
+                    return false;
+                }
+            }
+
+            if(IncouseMarks>30){
+                System.out.println("Incourse Marks > 30 Error");
+                return false;
+            }
+
+            if(FinalMarks>70){
+                System.out.println("Final Marks > 70 Error");
+                return false;
+            }
+
+            if(IncouseMarks+FinalMarks!=TotalMarks){
+                System.out.println("Incourse+final!=total Error");
+                return false;
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        return true;
+    }
+}

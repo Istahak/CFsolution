@@ -3,21 +3,18 @@
 using namespace std;
 void solve()
 {
-    int n, k, n, h, m, ls, ans;
-    char d;
-    cin >> n >> k >> n;
-    cin >> h >> h >> d >> m;
-    ls = m + h * 60;
-    ans = 1;
-    for (int i = 2; i <= n; i++)
+    ll a, b, n;
+    cin >> a >> b >> n;
+    ll sum = 0;
+    for (int i = 0; i < n; i++)
     {
-        cin >> h >> h >> d >> m;
-        m += h * 60;
-        if (m - ls > k)
-            ++ans;
-        ls = m;
+        ll x;
+        cin >> x;
+        sum += min(a, x + 1);
     }
-    cout << ans << '\n';
+    sum -= n;
+    sum += b;
+    cout << sum << '\n';
 }
 int main()
 {

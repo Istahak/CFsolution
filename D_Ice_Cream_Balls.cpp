@@ -29,7 +29,7 @@ void solve()
     lll cur = ispossible(ans);
     lll extra = n - cur;
     long long int aaa = ans + extra;
-    cout << aaa<< endl;
+    cout << aaa << endl;
 }
 int main()
 {

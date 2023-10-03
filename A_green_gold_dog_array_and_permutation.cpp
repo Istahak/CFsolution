@@ -5,22 +5,22 @@ void solve()
 {
     int n;
     cin >> n;
-    vector<int> v(n);
-    for (auto &x : v)
-        cin >> x;
-    vector<int> ans;
-    ans.push_back(v.front());
-    for (int i = 1; i < n; i++)
+    vector<pair<int, int>> v(n);
+    for (int i = 0; i < n; i++)
     {
-        if (v[i] < v[i - 1])
-        {
-            ans.push_back(v[i]);
-        }
-        ans.push_back(v[i]);
+        auto &[x, y] = v[i];
+        cin >> x;
+        y = i;
     }
-    cout << ans.size() << endl;
-    for (auto &x : ans)
-        cout << x << " ";
+    sort(v.rbegin(), v.rend());
+    vector<int> ans(n);
+    int cur = 1;
+    for (auto [x, y] : v)
+    {
+        ans[y] = cur++;
+    }
+    for (auto x : ans)
+        cout << x << ' ';
     cout << endl;
 }
 int main()

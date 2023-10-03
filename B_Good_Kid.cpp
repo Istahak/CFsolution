@@ -3,20 +3,17 @@
 using namespace std;
 void solve()
 {
-    int n, k, n, h, m, ls, ans;
-    char d;
-    cin >> n >> k >> n;
-    cin >> h >> h >> d >> m;
-    ls = m + h * 60;
-    ans = 1;
-    for (int i = 2; i <= n; i++)
-    {
-        cin >> h >> h >> d >> m;
-        m += h * 60;
-        if (m - ls > k)
-            ++ans;
-        ls = m;
-    }
+    int n;
+    cin >> n;
+    vector<int> v(n);
+    for (auto &x : v)
+        cin >> x;
+    sort(v.begin(), v.end());
+    v[0] += 1;
+    ll ans = 1;
+    for (auto &x : v)
+        ans *= 1LL * x;
+
     cout << ans << '\n';
 }
 int main()
