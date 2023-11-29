@@ -1,0 +1,21 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "project",
+            "username": "admin",
+            "database": "project",
+            "askForPassword": true
+        }
+    ],
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}
