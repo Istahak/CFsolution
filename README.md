@@ -1,3 +1,5 @@
 # CFsolution
 CF_solution
-<p>_0Istahak<br></p>
+## Codeforces : _0Istahak
+
+## Atcoder : Istahak_0
