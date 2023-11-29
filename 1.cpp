@@ -1,102 +1,100 @@
 #include <bits/stdc++.h>
 #define ll long long int
 using namespace std;
-const int N = 2e5 + 10;
-template <class T>
-class BIT
+
+#ifndef ONLINE_JUDGE
+#include "debug.h"
+#endif
+const int N = 3e5 + 10;
+vector<int> st[N];
+class SegTree
 {
 public:
-    int n;
-    vector<T> f;
-    BIT(int n) : n(n)
+    struct Node
     {
-        f.resize(n + 1, (T)0);
+        // need change
+        vector<int> val;
+    };
+
+    vector<Node> seg;
+    SegTree(int n)
+    {
+        seg.resize(4 * n + 1);
     }
-    BIT(const vector<T> &a)
-    { // O(n)
-        n = a.size();
-        f.assign(n + 1, (T)0);
-        for (int i = 1; i <= n; i++)
+    void BuildTree(int ind, int low, int high)
+    {
+        if (low == high)
         {
-            f[i] += a[i - 1];
-            if (i + (i & -i) <= n)
-            {
-                f[i + (i & -i)] += f[i];
-            }
+            auto &c = seg[ind];
+
+            c.val = st[low];
+            return;
         }
+        int mid = (low + high) >> 1;
+        BuildTree(2 * ind + 1, low, mid);
+        BuildTree(2 * ind + 2, mid + 1, high);
+        seg[ind] = marge(seg[2 * ind + 1], seg[2 * ind + 2]);
     }
-    void update(int p, T v)
+    int QuerySeg(int ind, int low, int high, int l, int r, int val)
     {
-        while (p <= n)
-            f[p] += v, p += p & -p;
+        if (low > r or high < l or low > high)
+        {
+            Node tem; // need change
+            return 0;
+        }
+        if (low >= l and r >= high)
+        {
+            auto &v = seg[ind].val;
+            int lo = lower_bound(v.begin(), v.end(), val) - v.begin();
+            lo = v.size() - lo;
+            return lo;
+        }
+        int mid = (low + high) >> 1;
+        auto left = QuerySeg(2 * ind + 1, low, mid, l, r, val);
+        auto right = QuerySeg(2 * ind + 2, mid + 1, high, l, r, val);
+        return left + right;
     }
-    T pref(int p)
+    Node marge(Node &a, Node &b)
     {
-        T ret = 0;
-        while (p)
-            ret += f[p], p -= p & -p;
-        return ret;
-    }
-    T range(int l, int r)
-    {
-        return pref(r) - pref(l - 1);
+        Node ans;
+        ans.val.resize(a.val.size() + b.val.size());
+        merge(a.val.begin(), a.val.end(), b.val.begin(), b.val.end(), ans.val.begin());
+        return ans;
     }
 };
 void solve()
 {
     int n, q;
     cin >> n >> q;
-    vector<int> v(N);
-    BIT<ll> bt(N);
-    int i = 1;
-    for (; i <= n; i++)
-    {
 
-        cin >> v[i];
-        bt.update(i, 1);
+    for (int i = 0; i < n; i++)
+    {
+        int s, e;
+        cin >> s >> e;
+        st[s].push_back(e);
     }
+    for (int i = 0; i < N; i++)
+    {
+        if (st[i].empty())
+            continue;
+        sort(st[i].begin(), st[i].end());
+    }
+    SegTree stt(N);
+    stt.BuildTree(0, 0, N - 1);
     while (q--)
     {
-        char c;
-        cin >> c;
-        if (c == 'c')
+        int k;
+        cin >> k;
+        int l = 1, ans = 0;
+        for (int i = 0; i < k; i++)
         {
-            int s;
-            cin >> s;
-            int l = 1, r = i - 1;
-            int ans = -1;
-            while (l <= r)
-            {
-                int m = (l + r) / 2;
-                int curs = bt.range(1, m);
-
-                if (curs >= s)
-                {
-                    ans = m;
-                    r = m - 1;
-                }
-                else
-                    l = m + 1;
-            }
-            if (ans == -1)
-            {
-                cout << "none\n";
-            }
-            else
-            {
-                cout << v[ans] << '\n';
-                bt.update(ans, -1);
-            }
+            int r;
+            cin >> r;
+            ans += stt.QuerySeg(0, 0, N - 1, l, r, r);
+            l = r + 1;
         }
-        else
-        {
 
-            int x;
-            cin >> x;
-            v[i] = x;
-            bt.update(i, 1);
-            i++;
-        }
+        cout << ans << '\n';
     }
 }
 int main()
@@ -104,10 +102,10 @@ int main()
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int t = 1;
-    cin >> t;
+    // cin >> t;
     for (int cs = 1; cs <= t; cs++)
     {
-        cout << "Case " << cs << ":\n";
+        // cout << "Case " << cs << ": ";
         solve();
     }
     return 0;

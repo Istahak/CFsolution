@@ -12,8 +12,6 @@ void solve()
         return;
     }
     ll lc = lcm(n, m);
-
-    // lc *= 2;
     bitset<32> bs(lc);
     int k = log2(lc);
     bool ok = false;
@@ -27,7 +25,7 @@ void solve()
         if (bs[i] == 0)
             ok = true;
     }
-    cout << bitset<8>(lc) << '\n';
+    // cout << bitset<8>(lc) << '\n';
 }
 int main()
 {
